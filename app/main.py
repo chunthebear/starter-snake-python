@@ -110,7 +110,7 @@ def move():
 	response = {
 		"move": Direction
 	}
-	return move_response(Direction)
+	return jsonify(response)
 
 def attack(x, y):
 	target = closestSnake()
