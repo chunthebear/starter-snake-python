@@ -99,8 +99,8 @@ def move():
 	x = jsonData['you']['body'][0]['x']
 	y = jsonData['you']['body'][0]['y']
 	#print("head: ", "(", x, ",", y, ")")
-	xlast = jsonData['you']['body'][1]['x']
-	ylast = jsonData['you']['body'][1]['y']
+	#xlast = jsonData['you']['body'][1]['x']
+	#ylast = jsonData['you']['body'][1]['y']
 	width = jsonData['board']["width"]
 	height = jsonData['board']["height"]
 	
