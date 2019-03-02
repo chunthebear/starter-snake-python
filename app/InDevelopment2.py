@@ -9,13 +9,14 @@ app = Flask(__name__)
 def start():
 	print(request.data)
 	snake = {
-		"color": "#ffff00",
-		"name": "InDevelopment"
+		"color": "#f00001",
+		"name": "InDevelopment2"
 	}
 	return jsonify(snake)
 
 @app.route("/move", methods=["GET","HEAD","POST","PUT"])
 def move():
+	
 	dataStr = request.data
 	global jsonData
 	jsonData = json.loads(dataStr.decode('utf-8'))
@@ -177,7 +178,7 @@ def isSafe(x, y, jsonData):
 		for point in snake['body']:
 			if x == point['x'] and y == point['y']:
 				return False
-	for snake in range(1, len(jsonData['board']['snakes'])):
+	for snake in range(1, len(jsonData['board']['snakes'])-1):
 		if (len(jsonData['board']['snakes'][snake]['body']) >= len(jsonData['you']['body'])):
 			if x == jsonData['board']['snakes'][snake]['body'][0]['x']+1 and y == jsonData['board']['snakes'][snake]['body'][0]['y']:
 				return False
@@ -372,4 +373,4 @@ def dontDieThisTurn(jsonData, x, y, Direction):
 
 if __name__ == "__main__":
 	# Don't forget to change the IP address before you try to run it locally
-	app.run(host='192.168.97.167', port=8081, debug=True)
+	app.run(host='192.168.97.167', port=8082, debug=True)
