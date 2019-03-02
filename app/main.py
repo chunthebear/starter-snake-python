@@ -3,6 +3,10 @@ from flask import Flask, request, jsonify
 import json
 import random
 
+
+from api import ping_response, start_response, move_response, end_response
+
+
 app = Flask(__name__)
 
 @app.route("/start", methods=["GET","HEAD","POST","PUT"])
