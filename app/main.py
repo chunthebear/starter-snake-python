@@ -110,14 +110,7 @@ def move():
 	response = {
 		"move": Direction
 	}
-	return bottle.HTTPResponse(
-		status=200,
-		headers={
-			"Content-Type": "application/json"
-		},
-		body=json.dumps({
-			"move": move
-		}))
+	return move_response(Direction)
 
 def attack(x, y):
 	target = closestSnake()
