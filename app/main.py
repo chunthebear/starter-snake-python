@@ -1,9 +1,9 @@
 # Imported a bunch of stuff even though this snake is not using AStar or random yet
-from flask import Flask, request, jsonify
+#from flask import Flask, request, jsonify
 import json
 import random
 import bottle 
-
+import os
 
 from api import ping_response, start_response, move_response, end_response
 
@@ -47,10 +47,11 @@ def start():
 
 @bottle.post('/move')
 def move():
-	dataStr = bottle.request.json
-	print(json.dumps(data))
 	global jsonData
-	jsonData = json.loads(dataStr.decode('utf-8'))
+	jsonData = bottle.request.json
+	print(json.dumps(jsonData))
+	#global jsonData
+	#jsonData = json.stringify(dataStr)
 	#print(jsonData)
 
 	x = jsonData['you']['body'][0]['x']
@@ -109,7 +110,7 @@ def move():
 	response = {
 		"move": Direction
 	}
-	return move_response(direction)
+	return move_response(Direction)
 
 def attack(x, y):
 	target = closestSnake()
@@ -423,6 +424,6 @@ if __name__ == '__main__':
     bottle.run(
         application,
         host=os.getenv('IP', '0.0.0.0'),
-        port=os.getenv('PORT', '8080'),
+        port=os.getenv('PORT', '8081'),
         debug=os.getenv('DEBUG', True)
     )
