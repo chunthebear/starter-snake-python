@@ -104,15 +104,18 @@ def move():
 	width = jsonData['board']["width"]
 	height = jsonData['board']["height"]
 	
-	point = closestFood(jsonData)
-	foodX0 = jsonData['board']['food'][point]['x']
-	foodY0 = jsonData['board']['food'][point]['y']
-	
-	if not isSafe(foodX0, foodY0, jsonData) and futureVision(x, y, jsonData)>1:
-		point = nextClosest(jsonData)
+	if len(jsonData['board']['food']) > 0:
+		point = closestFood(jsonData)
 		foodX0 = jsonData['board']['food'][point]['x']
 		foodY0 = jsonData['board']['food'][point]['y']
-	
+		
+		if not isSafe(foodX0, foodY0, jsonData) and futureVision(x, y, jsonData)>1:
+			point = nextClosest(jsonData)
+			foodX0 = jsonData['board']['food'][point]['x']
+			foodY0 = jsonData['board']['food'][point]['y']
+	else:
+		foodX0 = 0
+		foodY0 = 0
 	#print("food: (", foodX0, ",", foodY0, ")")
 	
 	#Direction = toFood(foodX0, foodY0, x, y)
