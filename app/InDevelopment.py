@@ -16,7 +16,6 @@ def start():
 
 @app.route("/move", methods=["GET","HEAD","POST","PUT"])
 def move():
-	print(12312123)
 	dataStr = request.data
 	global jsonData
 	jsonData = json.loads(dataStr.decode('utf-8'))
@@ -64,7 +63,7 @@ def move():
 	
 	idealDirection = "right"
 	
-	if jsonData['you']['health']>50:
+	if jsonData['you']['health']>40:
 		idealDirection = attack(x, y)
 		if idealDirection=="food":
 			idealDirection = toFoodSmart(foodX0, foodY0, x, y, jsonData)
@@ -178,15 +177,15 @@ def isSafe(x, y, jsonData):
 		for point in snake['body']:
 			if x == point['x'] and y == point['y']:
 				return False
-	for snake in jsonData['board']['snakes']:
-		if len(snake['body']) >= len(jsonData['you']['body']):
-			if x == snake['body']['x']+1 and y == snake['body']['']:
+	for snake in range(0, len(jsonData['board']['snakes'])-1):
+		if (len(jsonData['board']['snakes'][snake]['body']) >= len(jsonData['you']['body'])):
+			if x == jsonData['board']['snakes'][snake]['body'][0]['x']+1 and y == jsonData['board']['snakes'][snake]['body'][0]['y']:
 				return False
-			if x == snake['body']['x']-1 and y == snake['body']['']:
+			if x == jsonData['board']['snakes'][snake]['body'][0]['x']-1 and y == jsonData['board']['snakes'][snake]['body'][0]['y']:
 				return False
-			if x == snake['body']['x'] and y == snake['body']['']+1:
+			if x == jsonData['board']['snakes'][snake]['body'][0]['x'] and y == jsonData['board']['snakes'][snake]['body'][0]['y']+1:
 				return False
-			if x == snake['body']['x'] and y == snake['body']['']-1:
+			if x == jsonData['board']['snakes'][snake]['body'][0]['x'] and y == jsonData['board']['snakes'][snake]['body'][0]['y']-1:
 				return False
 	return True
 
