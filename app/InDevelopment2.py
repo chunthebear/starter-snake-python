@@ -178,16 +178,17 @@ def isSafe(x, y, jsonData):
 		for point in snake['body']:
 			if x == point['x'] and y == point['y']:
 				return False
-	for snake in range(1, len(jsonData['board']['snakes'])-1):
-		if (len(jsonData['board']['snakes'][snake]['body']) >= len(jsonData['you']['body'])):
-			if x == jsonData['board']['snakes'][snake]['body'][0]['x']+1 and y == jsonData['board']['snakes'][snake]['body'][0]['y']:
-				return False
-			if x == jsonData['board']['snakes'][snake]['body'][0]['x']-1 and y == jsonData['board']['snakes'][snake]['body'][0]['y']:
-				return False
-			if x == jsonData['board']['snakes'][snake]['body'][0]['x'] and y == jsonData['board']['snakes'][snake]['body'][0]['y']+1:
-				return False
-			if x == jsonData['board']['snakes'][snake]['body'][0]['x'] and y == jsonData['board']['snakes'][snake]['body'][0]['y']-1:
-				return False
+	for snake in range(0, len(jsonData['board']['snakes'])):
+		if jsonData['board']['snakes'][snake]['id'] != jsonData['you']['id']:
+			if (len(jsonData['board']['snakes'][snake]['body']) >= len(jsonData['you']['body'])):
+				if x == jsonData['board']['snakes'][snake]['body'][0]['x']+1 and y == jsonData['board']['snakes'][snake]['body'][0]['y']:
+					return False
+				if x == jsonData['board']['snakes'][snake]['body'][0]['x']-1 and y == jsonData['board']['snakes'][snake]['body'][0]['y']:
+					return False
+				if x == jsonData['board']['snakes'][snake]['body'][0]['x'] and y == jsonData['board']['snakes'][snake]['body'][0]['y']+1:
+					return False
+				if x == jsonData['board']['snakes'][snake]['body'][0]['x'] and y == jsonData['board']['snakes'][snake]['body'][0]['y']-1:
+					return False
 	return True
 
 def isSafeSimple(x, y, jsonData):
