@@ -117,7 +117,7 @@ def move():
 		},
 		body=json.dumps({
 			"move": move
-		})
+		}))
 
 def attack(x, y):
 	target = closestSnake()
