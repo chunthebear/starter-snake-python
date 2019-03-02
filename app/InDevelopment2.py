@@ -10,7 +10,7 @@ def start():
 	print(request.data)
 	snake = {
 		"color": "#f00001",
-		"name": "InDevelopment2"
+		"name": "InDevelopment"
 	}
 	return jsonify(snake)
 
