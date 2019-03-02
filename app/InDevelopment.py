@@ -16,27 +16,28 @@ def start():
 
 @app.route("/move", methods=["GET","HEAD","POST","PUT"])
 def move():
+	print(12312123)
 	dataStr = request.data
 	global jsonData
 	jsonData = json.loads(dataStr.decode('utf-8'))
 	#print(jsonData)
 
-	x = jsonData['you']['body']['data'][0]['x']
-	y = jsonData['you']['body']['data'][0]['y']
+	x = jsonData['you']['body'][0]['x']
+	y = jsonData['you']['body'][0]['y']
 	#print("head: ", "(", x, ",", y, ")")
-	xlast = jsonData['you']['body']['data'][1]['x']
-	ylast = jsonData['you']['body']['data'][1]['y']
-	width = jsonData["width"]
-	height = jsonData["height"]
+	xlast = jsonData['you']['body'][1]['x']
+	ylast = jsonData['you']['body'][1]['y']
+	width = jsonData['board']["width"]
+	height = jsonData['board']["height"]
 	
 	point = closestFood(jsonData)
-	foodX0 = jsonData['food']['data'][point]['x']
-	foodY0 = jsonData['food']['data'][point]['y']
+	foodX0 = jsonData['board']['food'][0]['x']
+	foodY0 = jsonData['board']['food'][0]['y']
 	
 	if not isSafe(foodX0, foodY0, jsonData) and futureVision(x, y, jsonData)>1:
 		point = nextClosest(jsonData)
-		foodX0 = jsonData['food']['data'][point]['x']
-		foodY0 = jsonData['food']['data'][point]['y']
+		foodX0 = jsonData['board']['food'][0]['x']
+		foodY0 = jsonData['board']['food'][0]['y']
 	
 	#print("food: (", foodX0, ",", foodY0, ")")
 	
@@ -157,12 +158,10 @@ def biggest(r, l, u, d, Direction):
 			return "down"
 	
 	return Direction
-	
-	
 
 def isSafe(x, y, jsonData):
-	width = jsonData["width"]
-	height = jsonData["height"]
+	width = jsonData['board']["width"]
+	height = jsonData['board']["height"]
 	
 	if x == width:
 		return False 
@@ -172,28 +171,28 @@ def isSafe(x, y, jsonData):
 		return False 
 	if y == -1:
 		return False 
-	for point in jsonData['you']['body']['data']:
+	for point in jsonData['you']['body']:
 		if x == point['x'] and y == point['y']:
 			return False
-	for snake in jsonData['snakes']['data']:
-		for point in snake['body']['data']:
+	for snake in jsonData['board']['snakes']:
+		for point in snake['body']:
 			if x == point['x'] and y == point['y']:
 				return False
-	for snake in range(0, int(len(jsonData['snakes']['data']))-1):
-		if (jsonData['snakes']['data'][snake]['length'] > jsonData['you']['length']) or (jsonData['snakes']['data'][snake]['length'] == jsonData['you']['length']):
-			if x == jsonData['snakes']['data'][snake]['body']['data'][0]['x']+1 and y == jsonData['snakes']['data'][snake]['body']['data'][0]['y']:
+	for snake in jsonData['board']['snakes']:
+		if len(snake['body']) >= len(jsonData['you']['body']):
+			if x == snake['body']['x']+1 and y == snake['body']['']:
 				return False
-			if x == jsonData['snakes']['data'][snake]['body']['data'][0]['x']-1 and y == jsonData['snakes']['data'][snake]['body']['data'][0]['y']:
+			if x == snake['body']['x']-1 and y == snake['body']['']:
 				return False
-			if x == jsonData['snakes']['data'][snake]['body']['data'][0]['x'] and y == jsonData['snakes']['data'][snake]['body']['data'][0]['y']+1:
+			if x == snake['body']['x'] and y == snake['body']['']+1:
 				return False
-			if x == jsonData['snakes']['data'][snake]['body']['data'][0]['x'] and y == jsonData['snakes']['data'][snake]['body']['data'][0]['y']-1:
+			if x == snake['body']['x'] and y == snake['body']['']-1:
 				return False
 	return True
 
 def isSafeSimple(x, y, jsonData):
-	width = jsonData["width"]
-	height = jsonData["height"]
+	width = jsonData['board']["width"]
+	height = jsonData['board']["height"]
 	
 	if x == width:
 		return False 
@@ -203,11 +202,11 @@ def isSafeSimple(x, y, jsonData):
 		return False 
 	if y == -1:
 		return False 
-	for point in jsonData['you']['body']['data']:
+	for point in jsonData['you']['body']:
 		if x == point['x'] and y == point['y']:
 			return False
-	for snake in jsonData['snakes']['data']:
-		for point in snake['body']['data']:
+	for snake in jsonData['board']['snakes']:
+		for point in snake['body']:
 			if x == point['x'] and y == point['y']:
 				return False
 
@@ -261,13 +260,13 @@ def toFoodSmart(fx, fy, sx, sy, jsonData):
 def closestFood(jsonData):
 	count = 0
 	closest = 0
-	width = jsonData["width"]
-	height = jsonData["height"]
+	width = jsonData['board']["width"]
+	height = jsonData['board']["height"]
 	default = width + height + 1
-	youX = jsonData['you']['body']['data'][0]['x']
-	youY = jsonData['you']['body']['data'][0]['y']
+	youX = jsonData['you']['body'][0]['x']
+	youY = jsonData['you']['body'][0]['y']
 	
-	for food in jsonData['food']['data']:
+	for food in jsonData['board']['food']:
 		count = count + 1
 		pathX = abs(youX - food['x'])
 		pathY = abs(youY - food['y'])
@@ -280,18 +279,18 @@ def closestFood(jsonData):
 def closestSnake():
 	count = 0
 	closest = -1
-	width = jsonData["width"]
-	height = jsonData["height"]
+	width = jsonData['board']["width"]
+	height = jsonData['board']["height"]
 	default = 5
-	youX = jsonData['you']['body']['data'][0]['x']
-	youY = jsonData['you']['body']['data'][0]['y']
+	youX = jsonData['you']['body'][0]['x']
+	youY = jsonData['you']['body'][0]['y']
 	
-	for snake in jsonData['snakes']['data']:
+	for snake in jsonData['board']['snakes']:
 		count = count + 1
-		pathX = abs(youX - snake['body']['data'][0]['x'])
-		pathY = abs(youY - snake['body']['data'][0]['y'])
+		pathX = abs(youX - snake['body'][0]['x'])
+		pathY = abs(youY - snake['body'][0]['y'])
 		pathTotal = pathX + pathY
-		if pathTotal<default and (snake['length'] < int(jsonData['you']['length'])-1):
+		if pathTotal<default and (len(snake['body']) < int(len(jsonData['you']['body']))-1):
 			default = pathTotal
 			closest = count - 1
 	return closest
@@ -299,13 +298,13 @@ def closestSnake():
 def nextClosest(num):
 	count = 0
 	closest = 0
-	width = jsonData["width"]
-	height = jsonData["height"]
+	width = jsonData['board']["width"]
+	height = jsonData['board']["height"]
 	default = width + height + 1
-	youX = jsonData['you']['body']['data'][0]['x']
-	youY = jsonData['you']['body']['data'][0]['y']
+	youX = jsonData['you']['body'][0]['x']
+	youY = jsonData['you']['body'][0]['y']
 	
-	for food in jsonData['food']['data']:
+	for food in jsonData['board']['food']:
 		count = count + 1
 		pathX = abs(youX - food['x'])
 		pathY = abs(youY - food['y'])
@@ -369,10 +368,9 @@ def dontDieThisTurn(jsonData, x, y, Direction):
 	if Direction == "up":
 		if not isSafeSimple(x, y-1, jsonData):
 			Direction = "right"
-    
+
 	return Direction
-   
+
 if __name__ == "__main__":
-    # Don't forget to change the IP address before you try to run it locally
-    app.run(host='192.168.97.167', port=8081, debug=True)
-    
+	# Don't forget to change the IP address before you try to run it locally
+	app.run(host='192.168.97.167', port=8081, debug=True)
