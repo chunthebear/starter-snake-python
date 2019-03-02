@@ -63,7 +63,7 @@ def move():
 	
 	idealDirection = "right"
 	
-	if jsonData['you']['health']>40:
+	if jsonData['you']['health']>50:
 		idealDirection = attack(x, y)
 		if idealDirection=="food":
 			idealDirection = toFoodSmart(foodX0, foodY0, x, y, jsonData)
