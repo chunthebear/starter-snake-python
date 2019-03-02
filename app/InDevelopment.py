@@ -374,5 +374,5 @@ def dontDieThisTurn(jsonData, x, y, Direction):
    
 if __name__ == "__main__":
     # Don't forget to change the IP address before you try to run it locally
-    app.run(host='192.168.7.39', port=8089, debug=True)
+    app.run(host='192.168.97.167', port=8081, debug=True)
     
